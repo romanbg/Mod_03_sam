@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1> WELCOME TO RELATIVE URL TEMPLATES</h1>
+    <a href="{% url 'userstories:dodaj_osobe' %}">Dodaj osobę </a>
+    <a href="{% url 'userstories:edytuj_osobe' %}">Edytuj osobę </a>
+    <a href="{% url 'userstories:osoba_info' %}">Informacja o osobie</a>
+    <a href="{% url 'userstories:usun_osobe' %}">Usuń osobę </a>
+    <a href="{% url 'userstories:dodaj_grupe' %}">Dodaj grupę </a>
+    <a href="{% url 'userstories:edytuj_grupe' %}">Edytuj grupę </a>
+    <a href="{% url 'userstories:grupa_info' %}">Informacja o grupie</a>
+    <a href="{% url 'userstories:usun_grupe' %}">Usuń grupę</a>
+    <a href="{% url 'userstories:lista_grup' %}">Lista grup </a>
+    <a href="{% url 'userstories:szukaj' %}">Szukaj</a>
+    <a href="{% url 'admin:index' %}">LINK TO ADMIN</a>
+    <a href="{% url 'index' %}">LINK TO INDEX</a>
+
+</body>
+</html>

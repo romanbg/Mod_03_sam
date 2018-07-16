@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1> Informacje personalne</h1>
+    <div class="container">
+        <table>
+            <thead>
+                <th>IMIĘ</th>
+                <th>NAZWISKO</th>
+                <th>OPIS</th>
+                <th>ADRES</th>
+                <th>TELEFON</th>
+                <th>EMAIL</th>
+                <th>GRUPY</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ osoba.firstname }}</td>
+                    <td>{{ osoba.surname }}</td>
+                    <td>{{ osoba.description }}</td>
+                    <td>{% if osoba.adres.city %}
+                        {{ osoba.adres.city }}, <br/>
+                        {% endif %}
+                        {% if osoba.adres.street_name %}
+                        ul. {{ osoba.adres.street_name }}
+                        {% endif %}
+                        {% if osoba.adres.street_number %}
+                            {{ osoba.adres.street_number }}
+                        {% endif %}
+                        {% if osoba.adres.flat_number %}
+                            {{ osoba.adres.flat_number }}
+                        {% endif %}
+                    </td>
+                    <td>{% if osoba.telefon %}
+                        {% for telefon in osoba.telefon.all %}
+                        {{ telefon.phone_number }} - {{ telefon.get_phone_type_display }} <br/>
+                        {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>{% if osoba.email %}
+                        {% for email in osoba.email.all %}
+                            {{ email.email_address }} - {{ email.get_email_type_display }} <br/>
+                        {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>
+                    do wypełnienia potem !!!<br/>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><a href="{% url 'userstories:edytuj_osobe' osoba.id %}"><button class="btn btn-primary">Edytuj Dane</button></a></p>
+    </div>
+</body>
+</html>

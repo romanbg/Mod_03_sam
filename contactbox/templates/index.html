@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends "plik_bazowy.html" %}
+    {% block body_block %}
+
+    <h1> Skrzynka Kontaktowa - Strona Główna </h1>
+
+    <h2> Lista Osób</h2>
+
+
+    <div class="container">
+        <div class="jumbotron">
+            <ul>
+                {% for osoba in lista_osob %}
+                 <li>
+                    <a href="{% url 'userstories:osoba_info' osoba.id %}"> {{osoba}}</a>
+                     <a href="{% url 'userstories:edytuj_osobe' osoba.id %}"><button class="btn btn-primary">Edytuj Dane</button></a>
+                    <a href="{% url 'userstories:usun_osobe' osoba.id %}"><button class="btn btn-primary">Usuń Osobę</button></a>
+
+                </li>
+
+                {% empty %}
+                <li>Nie ma jeszcze żadnej osoby</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+    {% endblock %}
+
+
