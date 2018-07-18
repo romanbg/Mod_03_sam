@@ -8,6 +8,7 @@
     <div class="container">
         <form method="POST">
             {{form_osoba.as_p}}
+            {{form_grupa.as_p}}
 
             {% csrf_token %}
             <input type="submit" class="btn btn-primary" value="Submit">

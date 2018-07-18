@@ -8,5 +8,34 @@
 </head>
 <body>
 
+    <h1> Skrzynka Kontaktowa - Lista Grup </h1>
+
+    <div class="container">
+        <div class="jumbotron">
+            <ul>
+                {% for grupa in lista_grup %}
+                 <li>
+                     <a href="{% url 'userstories:grupa_info' grupa.id %}"> {{grupa}}</a>
+                     <a href="{% url 'userstories:edytuj_grupe' grupa.id %}"><button class="btn btn-primary">Edytuj grupę</button></a>
+                     <a href="{% url 'userstories:usun_grupe' grupa.id %}"><button class="btn btn-primary">Usuń grupę</button></a>
+                </li>
+
+                {% empty %}
+                <li>Nie ma jeszcze utworzonej żadnej grupy</li>
+                {% endfor %}
+
+
+            </ul>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-link" href="{% url 'userstories:dodaj_grupe' %}">Stwórz nowa grupę</a></li>
+            </ul>
+        </div>
+    </nav>
+
 </body>
 </html>

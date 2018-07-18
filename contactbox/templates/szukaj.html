@@ -7,6 +7,62 @@
 
 </head>
 <body>
+    <form action="#" method="POST">
+        <p>Wyszukaj Osobę</p>
+        <label>
+            Tytuł
+            <p>
+                <input name="title" type="text" value="">
+            </p>
+        </label>
+        <label>
+            Imię
+            <p>
+                <input name="first_name" type="text" value="">
+            </p>
+        </label>
+        <label>
+            Nazwisko
+            <p>
+                <input name="last_name" type="text" value="">
+            </p>
+        </label>
+        <label>
+            Rok
+            <p>
+                <input name="year" type="text" value="">
+            </p>
+        </label>
+        <label>
+            Ranking
+            <p>
+                <input name="rating" type="text" value="">
+            </p>
+        </label>
+            <p><input type="submit"  value="szukaj"></p>
+
+        <label>
+            <p><strong>Lista znalezionych pozycji:</strong></p>
+            <p></p>
+            <table>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Rok produkcji</th>
+                    <th>Reżyser</th>
+                    <th>Ranking</th>
+                </tr>
+                {% for movie in list_of_movies %}
+                <tr>
+                    <td> {{ movie.title }} </td>
+                    <td> {{ movie.year }} </td>
+                    <td> {{ movie.director}} </td>
+                    <td> {{ movie.ranking}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </label>
+
+    </form>
 
 </body>
 </html>

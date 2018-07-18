@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views import View
 from .models import *
 from .forms import *
@@ -17,26 +17,32 @@ class DodajOsobe(View):
 
     def get(self, request):
         form_osoba = FormOsoba()
+        form_grupa = FormGrupy()
         context = {
             'form_osoba':form_osoba,
+            'form_grupa':form_grupa,
         }
         return render(request, 'dodaj_osobe.html', context)
 
     def post(self, request):
         form_osoba = FormOsoba(request.POST)
+        form_grupa = FormGrupy(request.POST)
 
-        if form_osoba.is_valid():
+        if form_osoba.is_valid() and form_grupa.is_valid():
+
+            osoba=Osoba.objects.create(**form_osoba.cleaned_data)
 
             form_osoba.save(commit=True)
+            form_grupa.save(commit=True)
 
-            #jak to poprawnie przekierować?
-            return #redirect('userstories:osoba_info')
+            return redirect('userstories:osoba_info', id=osoba.id)
 
         else:
             print("Formularz niepoprawnie wypełniony")
 
         context = {
             'form_osoba': form_osoba,
+            'form_grupa': form_grupa,
         }
 
         return render(request, 'dodaj_osobe.html', context)
@@ -76,7 +82,7 @@ class EdytujOsobe(View):
 
     def post(self, request, id):
 
-        osoba = Osoba.objects.get(id=id)
+        dana_osoba = Osoba.objects.get(id=id)
 
         form_osoba = FormOsoba(request.POST)
         form_adres = FormAdres(request.POST)
@@ -90,7 +96,7 @@ class EdytujOsobe(View):
             form_telefon.save(commit=True)
             form_email.save(commit=True)
 
-            return redirect('userstories:osoba_info', id=osoba.id)
+            return redirect('userstories:osoba_info', dana_osoba)
 
         else:
             print("Formularz niepoprawnie wypełniony")
@@ -115,36 +121,131 @@ class OsobaInfo(View):
         return render(request, "osoba_info.html", context)
 
 class UsunOsobe(View):
-    def get(self, request):
-        return render(request, "usun_osobe.html")
+    def get(self, request, id):
+        osoba = Osoba.objects.get(id=id)
+        form_osoba = FormOsoba(instance=osoba)
+        context = {
+            'form_osoba': form_osoba
+        }
 
-class DodajGrupe(View):
-    def get(self, request):
-        return render(request, "dodaj_grupe.html")
+        return render(request, "usun_osobe.html", context)
 
-class EdytujGrupe(View):
-    def get(self, request):
-        return render(request, "edytuj_grupe.html")
+    def post(self, request, id):
+        osoba = Osoba.objects.get(id=id)
+        osoba.delete()
 
-class GrupaInfo(View):
-    def get(self, request):
-        return render(request, "grupa_info.html")
+        return redirect('index')
 
-class UsunGrupe(View):
-    def get(self, request):
-        return render(request, "usun_grupe.html")
+#Część dotycząca grup
 
 class ListaGrup(View):
+    """ Ma za zadanie pokazać wszystkie dostepne grupy"""
     def get(self, request):
-        return render(request, "lista_grup.html")
+        lista_grup = Grupy.objects.all()
+        context = {
+            'lista_grup':lista_grup
+        }
+        return render(request, "lista_grup.html", context)
+
+class DodajGrupe(View):
+    """Dodaje nową grupę"""
+    def get(self, request):
+
+        form_grupa = FormGrupy()
+
+        context = {'form_grupa':form_grupa}
+
+        return render(request, "dodaj_grupe.html", context)
+
+    def post(self, request):
+
+        form_grupa = FormGrupy(request.POST)
+
+        if form_grupa.is_valid():
+
+            form_grupa.save(commit=True)
+
+            return redirect('userstories:lista_grup')
+
+        context ={'form_grupa':form_grupa}
+
+        return render(request, "dodaj_grupe.html", context)
+
+class GrupaInfo(View):
+    """Wyświetla informacje szczegółowe o danej grupie"""
+    def get(self, request, id):
+        grupy = Grupy.objects.get(pk=id)
+        osoby = grupy.osoby.all()
+        context = {
+            'grupy':grupy,
+            'uczestnicy':osoby,
+        }
+        return render(request, "grupa_info.html", context)
+
+class EdytujGrupe(View):
+    """Modyfikacja grupy"""
+    def get(self, request, id):
+        grupy = Grupy.objects.get(pk=id)
+        form_grupa = FormGrupy(instance=grupy)
+        context = {'form_grupa': form_grupa}
+        return render(request, "edytuj_grupe.html", context)
+
+    def post(self, request, id):
+        grupy = Grupy.objects.get(pk=id)
+        form_grupa = FormGrupy(request.POST,instance=grupy)
+        if form_grupa.is_valid():
+            grupy = form_grupa.save()
+            return redirect('userstories:grupy_info', id=grupy.id)
+        context = {
+            'form_grupa':form_grupa
+        }
+        return render(request, "edytuj_grupe.html", context)
+
+class UsunGrupe(View):
+    """Usuwanie wcześniej utworzonej grupy"""
+    def get(self, request, id):
+        grupy = Grupy.objects.get(pk=id)
+        form_grupa = FormGrupy(instance=grupy)
+        context = {
+            'form_grupa': form_grupa
+        }
+
+        return render(request, "usun_grupe.html", context)
+    def post(self, request, id):
+        grupy = Grupy.objects.get(pk=id)
+        grupy.delete()
+        return redirect('userstories:lista_grup')
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Szukaj(View):
+
     def get(self, request):
+
         return render(request, "szukaj.html")
+
+    def post(self, request):
+
+        if request.POST.get('firstname'):
+            osoba = Osoba.objects.filter(firstname__contains = request.POST['firstname'])
+            return render_to_response('szukaj.html', {'lista_osob': osoba})
+
+        if request.POST.get('surname'):
+            osoba = Osoba.objects.filter(surname__contains = request.POST['surname'])
+            return render_to_response('szukaj.html', {'lista_osob': osoba})
+
+
 
 def relative(request):
     return render(request, "relative_url_templates.html")
 
-class Temporary(View):
-    def get(self, request):
-        return render(request, "temporary.html")

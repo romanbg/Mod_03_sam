@@ -7,6 +7,25 @@
 
 </head>
 <body>
+    <h1> Informacje o grupie </h1>
+
+    <div class="container">
+        <div class="jumbotron">
+           <h2>Nazwa grupy: {{ grupy }} </h2>
+            <ul>
+                {% for osoba in osoby %}
+                    <li>
+                        <a href="{% url 'userstories:osoba_info' osoby.id %}">{{osoby}}</a>
+                    </li>
+
+                {% empty %}
+                <li>Nie ma jeszcze żadnej osoby</li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+    </div>
 
 </body>
 </html>

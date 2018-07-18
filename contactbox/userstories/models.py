@@ -51,7 +51,7 @@ class Email(models.Model):
 
 
 class Grupy(models.Model):
-    group_name = models.CharField(max_length=64, default='podstawowa')
+    group_name = models.CharField(max_length=64, verbose_name='Nazwa grupy', default='podstawowa')
     osoby = models.ManyToManyField(Osoba, related_name='grupy')
 
     def __str__(self):
