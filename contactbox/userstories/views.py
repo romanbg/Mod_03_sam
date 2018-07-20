@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.views import View
 from .models import *
 from .forms import *
@@ -82,7 +82,7 @@ class EdytujOsobe(View):
 
     def post(self, request, id):
 
-        dana_osoba = Osoba.objects.get(id=id)
+        osoba = Osoba.objects.get(id=id)
 
         form_osoba = FormOsoba(request.POST)
         form_adres = FormAdres(request.POST)
@@ -96,7 +96,7 @@ class EdytujOsobe(View):
             form_telefon.save(commit=True)
             form_email.save(commit=True)
 
-            return redirect('userstories:osoba_info', dana_osoba)
+            return redirect('userstories:osoba_info', id=osoba.id)
 
         else:
             print("Formularz niepoprawnie wypełniony")
@@ -130,7 +130,7 @@ class UsunOsobe(View):
 
         return render(request, "usun_osobe.html", context)
 
-    def post(self, request, id):
+    def post(self, id):
         osoba = Osoba.objects.get(id=id)
         osoba.delete()
 
@@ -217,17 +217,6 @@ class UsunGrupe(View):
         return redirect('userstories:lista_grup')
 
 
-
-
-
-
-
-
-
-
-
-
-
 class Szukaj(View):
 
     def get(self, request):
@@ -238,14 +227,16 @@ class Szukaj(View):
 
         if request.POST.get('firstname'):
             osoba = Osoba.objects.filter(firstname__contains = request.POST['firstname'])
-            return render_to_response('szukaj.html', {'lista_osob': osoba})
+            return render(request, 'szukaj.html', {'lista_osob': osoba})
 
         if request.POST.get('surname'):
             osoba = Osoba.objects.filter(surname__contains = request.POST['surname'])
-            return render_to_response('szukaj.html', {'lista_osob': osoba})
+            return render(request, 'szukaj.html', {'lista_osob': osoba})
 
 
+class Relative(View):
 
-def relative(request):
-    return render(request, "relative_url_templates.html")
+    def get(self, request):
+
+        return render(request, "relative_url_templates.html")
 

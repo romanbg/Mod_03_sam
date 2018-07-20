@@ -9,12 +9,7 @@
 <body>
     <form action="#" method="POST">
         <p>Wyszukaj Osobę</p>
-        <label>
-            Tytuł
-            <p>
-                <input name="title" type="text" value="">
-            </p>
-        </label>
+
         <label>
             Imię
             <p>
@@ -27,41 +22,27 @@
                 <input name="last_name" type="text" value="">
             </p>
         </label>
-        <label>
-            Rok
-            <p>
-                <input name="year" type="text" value="">
-            </p>
-        </label>
-        <label>
-            Ranking
-            <p>
-                <input name="rating" type="text" value="">
-            </p>
-        </label>
+
             <p><input type="submit"  value="szukaj"></p>
 
         <label>
-            <p><strong>Lista znalezionych pozycji:</strong></p>
+            <p><strong>Lista znalezionych osób:</strong></p>
             <p></p>
             <table>
                 <tr>
-                    <th>Tytuł</th>
-                    <th>Rok produkcji</th>
-                    <th>Reżyser</th>
-                    <th>Ranking</th>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
                 </tr>
-                {% for movie in list_of_movies %}
+                {% for osoba in lista_osob %}
                 <tr>
-                    <td> {{ movie.title }} </td>
-                    <td> {{ movie.year }} </td>
-                    <td> {{ movie.director}} </td>
-                    <td> {{ movie.ranking}}</td>
+                    <td> {{ ossoba.firstname }} </td>
+                    <td> {{ osoba.surname }} </td>
+
                 </tr>
                 {% endfor %}
             </table>
         </label>
-
+        {% csrf_token %}
     </form>
 
 </body>

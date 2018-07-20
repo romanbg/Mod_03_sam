@@ -6,7 +6,7 @@ from .views import *
 app_name = 'userstories'
 
 urlpatterns=[
-    url(r'^relative/$',views.relative, name='relative'),
+    url(r'^mapa_aplikacji/$',Relative.as_view(), name='mapa_aplikacji'),
     url(r'^dodaj_osobe/$',DodajOsobe.as_view(), name="dodaj_osobe"),
     url(r'^modify/(?P<id>[0-9]+)/$',EdytujOsobe.as_view(), name="edytuj_osobe"),
     url(r'^show/(?P<id>[0-9]+)/$',OsobaInfo.as_view(), name="osoba_info"),

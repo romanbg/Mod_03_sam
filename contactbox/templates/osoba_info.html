@@ -49,8 +49,11 @@
                         {% endfor %}
                         {% endif %}
                     </td>
-                    <td>
-                    do wypełnienia potem !!!<br/>
+                    <td>{% if osoba.grupy %}
+                        {% for grupy in osoby.grupy.all %}
+                            {{ grupy.group_name }}
+                        {% endfor %}
+                        {% endif %}
 
                     </td>
                 </tr>
